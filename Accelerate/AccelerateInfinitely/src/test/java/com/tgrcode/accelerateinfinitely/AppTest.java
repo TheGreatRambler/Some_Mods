@@ -1,4 +1,4 @@
-package dev.cibmc.spigot.blankplugin;
+package com.tgrcode.accelerateinfinitely;
 
 import static org.junit.Assert.assertTrue;
 

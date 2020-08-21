@@ -1,0 +1,12 @@
+{
+	"folders": [{
+		"path": "."
+	}],
+	"settings": {
+		"files.autoGuessEncoding": true,
+		"files.encoding": "utf8",
+		"java.home": "${env:JAVA_HOME}",
+		"java.jdt.ls.vmargs": "-Dfile.encoding=UTF-8",
+		"javac-linter.javac": "javac -Dfile.encoding=UTF-8"
+	}
+}

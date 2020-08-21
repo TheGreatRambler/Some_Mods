@@ -1,0 +1,28 @@
+{
+	"version": "2.0.0",
+	"tasks": [{
+		"label": "Build Plugin",
+		"type": "shell",
+		"command": "mvn package -f 'AccelerateInfinitely/pom.xml'",
+		"presentation": {
+			"reveal": "always",
+			"panel": "dedicated"
+		},
+		"problemMatcher": [{
+			"owner": "external",
+			//"fileLocation": ["absolute"],
+			"fileLocation": ["autoDetect", "${workspaceFolder}"],
+			"pattern": [{
+				"regexp": "^(.+\\.java):(\\d):(?:\\s+(error)):(?:\\s+(.*))$",
+				"file": 1,
+				"location": 2,
+				"severity": 3,
+				"message": 4
+			}]
+		}],
+		"group": {
+			"kind": "build",
+			"isDefault": true
+		}
+	}]
+}
