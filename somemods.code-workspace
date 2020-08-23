@@ -5,7 +5,9 @@
 		},
 		{
 			"path": "Accelerate"
+		},
+		{
+			"path": "MinecartOnly"
 		}
-	],
-	"settings": {}
+	]
 }

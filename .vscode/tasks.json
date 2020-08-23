@@ -1,9 +1,9 @@
 {
 	"version": "2.0.0",
 	"tasks": [{
-		"label": "Build Plugin",
+		"label": "Send Server",
 		"type": "shell",
-		"command": "./export.sh",
+		"command": "./sendtoserver.sh",
 		"presentation": {
 			"reveal": "always",
 			"panel": "dedicated"

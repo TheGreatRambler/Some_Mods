@@ -4,10 +4,10 @@
 		4.0.0
 	</modelVersion>
 	<groupId>
-		com.tgrcode.accelerateinfinitely
+		com.tgrcode.minecartonly
 	</groupId>
 	<artifactId>
-		AccelerateInfinitely
+		MinecartOnly
 	</artifactId>
 	<version>
 		0.0.1
@@ -57,7 +57,7 @@
 			${project.basedir}/src/main/java
 		</sourceDirectory>
 		<finalName>
-			AccelerateInfinitely
+			MinecartOnly
 		</finalName>
 		<resources>
 			<resource>

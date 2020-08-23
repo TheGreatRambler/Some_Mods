@@ -1,3 +1,5 @@
 maven-archiver
 maven-status
 surefire-reports
+*.jar
+*.sh
