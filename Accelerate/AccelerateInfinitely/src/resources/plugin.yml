@@ -1,0 +1,11 @@
+main: com.tgrcode.accelerateinfinitely.App
+name: AccelerateInfinitely
+version: 0.0.1
+api-version: 1.14
+commands:
+  setaccel:
+      description: Set acceleration type
+      usage: /setaccel [type]
+  setmultiplieraccel:
+      description: Set acceleration multiplier
+      usage: /setmultiplieraccel [multiplier]
