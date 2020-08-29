@@ -19,9 +19,9 @@ public class App extends JavaPlugin implements Listener {
 		DISABLED,
 	}
 
-	private float multiplier     = 1.1f;
+	private float speed          = 0.005f;
+	private float currentSpeed   = 0.3f;
 	private AccelType type       = AccelType.FORWARDS;
-	private Vector lastVelocity  = null;
 	private boolean oneTickDelay = false;
 
 	@Override
@@ -35,23 +35,28 @@ public class App extends JavaPlugin implements Listener {
 		Bukkit.getServer().getScheduler().runTaskTimer(this, new Runnable() {
 			@Override
 			public void run() {
-				for(Player player : Bukkit.getServer().getOnlinePlayers()) {
-					if(player.isSprinting()) {
-						if(player.isOnGround()) {
-							if(oneTickDelay) {
-								oneTickDelay = false;
+				if(type != AccelType.DISABLED) {
+					for(Player player : Bukkit.getServer().getOnlinePlayers()) {
+						if(player.isSprinting()) {
+							if(player.isOnGround()) {
+								if(oneTickDelay) {
+									oneTickDelay = false;
+								} else {
+									currentSpeed = 0.5f;
+								}
 							} else {
-								lastVelocity = null;
+								if(type == AccelType.FORWARDS) {
+									Vector targetVelocity = player.getLocation().getDirection().multiply(currentSpeed);
+									// Don't modify the Y velocity
+									targetVelocity.setY(player.getVelocity().getY());
+									player.setVelocity(targetVelocity);
+									currentSpeed += speed;
+									oneTickDelay = true;
+								}
 							}
 						} else {
-							if(lastVelocity != null) {
-								player.setVelocity(lastVelocity.multiply(multiplier));
-							}
-							lastVelocity = player.getVelocity();
-							oneTickDelay = true;
+							currentSpeed = 0.5f;
 						}
-					} else {
-						lastVelocity = null;
 					}
 				}
 			}
@@ -73,7 +78,7 @@ public class App extends JavaPlugin implements Listener {
 				type = AccelType.DISABLED;
 			}
 		} else if(command.getName().equals("setmultiplieraccel")) {
-			multiplier = Float.parseFloat(label);
+			speed = Float.parseFloat(label);
 		}
 
 		return true;
