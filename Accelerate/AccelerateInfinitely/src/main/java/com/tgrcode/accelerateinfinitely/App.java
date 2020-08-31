@@ -19,10 +19,11 @@ public class App extends JavaPlugin implements Listener {
 		DISABLED,
 	}
 
-	private float speed          = 0.005f;
-	private float currentSpeed   = 0.3f;
-	private AccelType type       = AccelType.FORWARDS;
-	private boolean oneTickDelay = false;
+	private const float initialSpeed = 0.3f;
+	private float speed              = 0.005f;
+	private float currentSpeed       = initialSpeed;
+	private AccelType type           = AccelType.FORWARDS;
+	private boolean oneTickDelay     = false;
 
 	@Override
 	public void onEnable() {
@@ -42,7 +43,7 @@ public class App extends JavaPlugin implements Listener {
 								if(oneTickDelay) {
 									oneTickDelay = false;
 								} else {
-									currentSpeed = 0.5f;
+									currentSpeed = initialSpeed;
 								}
 							} else {
 								if(type == AccelType.FORWARDS) {
@@ -55,7 +56,7 @@ public class App extends JavaPlugin implements Listener {
 								}
 							}
 						} else {
-							currentSpeed = 0.5f;
+							currentSpeed = initialSpeed;
 						}
 					}
 				}
