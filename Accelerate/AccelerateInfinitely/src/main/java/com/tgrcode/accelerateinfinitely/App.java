@@ -19,11 +19,13 @@ public class App extends JavaPlugin implements Listener {
 		DISABLED,
 	}
 
-	private const float initialSpeed = 0.3f;
-	private float speed              = 0.005f;
-	private float currentSpeed       = initialSpeed;
-	private AccelType type           = AccelType.FORWARDS;
-	private boolean oneTickDelay     = false;
+	private float initialSpeed    = 0.2f;
+	private float speedMultiplier = 1.01f;
+
+	private float currentSpeed   = initialSpeed;
+	private AccelType type       = AccelType.FORWARDS;
+	private int tickDelayAllowed = 5;
+	private int currentTickDelay = 0;
 
 	@Override
 	public void onEnable() {
@@ -38,25 +40,21 @@ public class App extends JavaPlugin implements Listener {
 			public void run() {
 				if(type != AccelType.DISABLED) {
 					for(Player player : Bukkit.getServer().getOnlinePlayers()) {
-						if(player.isSprinting()) {
-							if(player.isOnGround()) {
-								if(oneTickDelay) {
-									oneTickDelay = false;
-								} else {
-									currentSpeed = initialSpeed;
-								}
+						if(player.isOnGround() || !player.isSprinting()) {
+							if(currentTickDelay < tickDelayAllowed) {
+								currentTickDelay++;
 							} else {
-								if(type == AccelType.FORWARDS) {
-									Vector targetVelocity = player.getLocation().getDirection().multiply(currentSpeed);
-									// Don't modify the Y velocity
-									targetVelocity.setY(player.getVelocity().getY());
-									player.setVelocity(targetVelocity);
-									currentSpeed += speed;
-									oneTickDelay = true;
-								}
+								currentSpeed = initialSpeed;
 							}
 						} else {
-							currentSpeed = initialSpeed;
+							if(type == AccelType.FORWARDS) {
+								Vector targetVelocity = player.getLocation().getDirection().multiply(currentSpeed);
+								// Don't modify the Y velocity
+								targetVelocity.setY(player.getVelocity().getY());
+								player.setVelocity(targetVelocity);
+								currentSpeed *= speedMultiplier;
+								currentTickDelay = 0;
+							}
 						}
 					}
 				}
@@ -79,7 +77,7 @@ public class App extends JavaPlugin implements Listener {
 				type = AccelType.DISABLED;
 			}
 		} else if(command.getName().equals("setmultiplieraccel")) {
-			speed = Float.parseFloat(label);
+			speedMultiplier = Float.parseFloat(label);
 		}
 
 		return true;
@@ -99,5 +97,18 @@ public class App extends JavaPlugin implements Listener {
 	@EventHandler
 	public void onPlayerJoin(PlayerJoinEvent event) {
 		event.getPlayer().setFlying(false);
+	}
+
+	private Vector yawToVector(float yaw) {
+		// Pitch is always 0
+		double pitchRadians = Math.toRadians(0);
+		double yawRadians   = Math.toRadians(yaw);
+
+		double sinPitch = Math.sin(pitchRadians);
+		double cosPitch = Math.cos(pitchRadians);
+		double sinYaw   = Math.sin(yawRadians);
+		double cosYaw   = Math.cos(yawRadians);
+
+		return new Vector(-cosPitch * sinYaw, sinPitch, -cosPitch * cosYaw);
 	}
 }
